@@ -35,21 +35,23 @@ elif choice == "View Contacts":
         st.write(f"👤 {contact[1]} | 📞 {contact[2]} | ✉️ {contact[3]}")
 elif choice == "Update Contact":
     st.subheader("✏️ Update Contact")
-    contact_id = st.number_input("Enter Contact ID to Update", min_value=1)
+    contact_name = st.text_input("Enter Contact Name to Update")
     new_name = st.text_input("New Name")
     new_phone = st.text_input("New Phone")
     new_email = st.text_input("New Email")
     
     if st.button("Update"):
-        cursor.execute("UPDATE contacts SET name=?, phone=?, email=? WHERE id=?", 
-                       (new_name, new_phone, new_email, contact_id))
+        cursor.execute("UPDATE contacts SET phone=?, email=? WHERE name=?", 
+                       (new_phone, new_email, contact_name))
         conn.commit()
-        st.success("✅ Contact updated successfully!")
+        st.success(f"✅ Contact '{contact_name}' updated successfully!")
+
 elif choice == "Delete Contact":
     st.subheader("❌ Delete Contact")
-    contact_id = st.number_input("Enter Contact ID to Delete", min_value=1)
+    contact_name = st.text_input("Enter Contact Name to Delete")
     
     if st.button("Delete"):
-        cursor.execute("DELETE FROM contacts WHERE id=?", (contact_id,))
-        conn.commit()
-        st.success("✅ Contact deleted successfully!")
+        cursor.execute("DELETE FROM contacts WHERE name=?", (contact_name,))
+    conn.commit()
+    st.success(f"✅ Contact '{contact_name}' deleted successfully!")
+
